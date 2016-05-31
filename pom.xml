@@ -15,7 +15,7 @@
 		<struts.version>2.1.8.1</struts.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 		<springweb.version>3.2.10.RELEASE</springweb.version>
-		
+
 	</properties>
 
 	<dependencies>
@@ -68,13 +68,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${springweb.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
@@ -94,7 +94,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
@@ -111,7 +111,40 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>test.com.br</groupId>
+			<artifactId>TestarS3</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+
 	</dependencies>
+
+
+
+	<repositories>
+		<repository>
+			<id>maven-s3-release-repo</id>
+			<url>s3://test-golang</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>maven-s3-release-repo</id>
+			<url>s3://test-golang</url>
+		</repository>
+		<snapshotRepository>
+			<id>maven-s3-release-repo</id>
+			<url>s3://test-golang</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
+
 
 	<build>
 		<plugins>
@@ -126,6 +159,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<extensions>
+			<extension>
+				<groupId>org.kuali.maven.wagons</groupId>
+				<artifactId>maven-s3-wagon</artifactId>
+				<version>1.2.1</version>
+			</extension>
+		</extensions>
+
 	</build>
 
 
