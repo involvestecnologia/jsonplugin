@@ -4,7 +4,7 @@
 
 	<groupId>br.com.involves.jsonplugin</groupId>
 	<artifactId>jsonplugin</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>jsonplugin</name>
@@ -34,6 +34,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>br.com.involves.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-core</artifactId>
 			<version>${struts.version}</version>
@@ -49,10 +55,10 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-			<version>3.2.3.ga</version>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.1.GA</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-logging</artifactId>
@@ -67,7 +73,7 @@
 					<groupId>dom4j</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -111,37 +117,80 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>test.com.br</groupId>
-			<artifactId>TestarS3</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-
 	</dependencies>
 
 
 
 	<repositories>
 		<repository>
-			<id>maven-s3-release-repo</id>
-			<url>s3://test-golang</url>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/libs-snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+
 	</repositories>
 
-	<distributionManagement>
-		<repository>
-			<id>maven-s3-release-repo</id>
-			<url>s3://test-golang</url>
-		</repository>
-		<snapshotRepository>
-			<id>maven-s3-release-repo</id>
-			<url>s3://test-golang</url>
-		</snapshotRepository>
-	</distributionManagement>
+	<profiles>
+
+		<profile>
+			<id>dev</id>
+			<activation>
+           <activeByDefault>true</activeByDefault>
+       </activation>
+			<repositories>
+				<repository>
+					<id>maven-s3-release-repo</id>
+					<url>s3://repo.involves.com.br/snapshot</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<distributionManagement>
+				<repository>
+					<id>maven-s3-release-repo</id>
+					<url>s3://repo.involves.com.br/snapshot</url>
+				</repository>
+				<snapshotRepository>
+					<id>maven-s3-release-repo</id>
+					<url>s3://repo.involves.com.br/snapshot</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+
+		<profile>
+			<id>release</id>
+			<repositories>
+				<repository>
+					<id>maven-s3-release-repo</id>
+					<url>s3://repo.involves.com.br/release</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<distributionManagement>
+				<repository>
+					<id>maven-s3-release-repo</id>
+					<url>s3://repo.involves.com.br/release</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+
+	</profiles>
 
 
 
