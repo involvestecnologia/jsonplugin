@@ -20,26 +20,8 @@
  */
 package com.googlecode.jsonplugin;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
-import java.text.CharacterIterator;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.text.StringCharacterIterator;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Stack;
-import java.util.regex.Pattern;
-
-import javax.servlet.ServletContext;
-
+import com.googlecode.jsonplugin.annotations.JSON;
+import com.opensymphony.xwork2.ActionContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.StrutsStatics;
@@ -51,8 +33,19 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.googlecode.jsonplugin.annotations.JSON;
-import com.opensymphony.xwork2.ActionContext;
+import javax.servlet.ServletContext;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.CharacterIterator;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.StringCharacterIterator;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -265,8 +258,7 @@ class JSONWriter {
 						this.add(',');
 					}
 					hasData = true;
-			
-					Object value = accessor.invoke(object, new Object[0]);
+					Object value = invokeMethod(object, accessor);
 					this.add(name, value, accessor);
 					if (this.buildExpr) {
 						this.setExprStack(expr);
@@ -283,11 +275,29 @@ class JSONWriter {
 				Object value = ((Enum) object).name();
 				this.add("_name", value, object.getClass().getMethod("name"));
 			}
+
+
+
 		} catch (Exception e) {
+			log.error("There was an error while parsing the JSON object: " + e);
+			log.error(e);
 			throw new JSONException(e);
 		}
 
 		this.add("}");
+	}
+
+	private Object invokeMethod(Object object, Method method) throws NullPointerException, InvocationTargetException,
+			IllegalAccessException, JSONException {
+		try{
+			return method.invoke(object, new Object[0]);
+		} catch (NullPointerException e) {
+			log.error(String.format("Null Pointer while converting bean class: %s", object.getClass().getName()));
+			log.error(String.format("At the method: %s", method.getName()));
+			throw new JSONException(e);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw e;
+		}
 	}
 
 	/**
