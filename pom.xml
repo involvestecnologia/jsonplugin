@@ -12,7 +12,7 @@
 	<properties>
 		<java.version>1.7</java.version>
 		<java.encoding>ISO-8859-1</java.encoding>
-		<struts.version>2.1.8.1</struts.version>
+		<struts.version>2.3.34</struts.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 		<springweb.version>3.2.10.RELEASE</springweb.version>
 
