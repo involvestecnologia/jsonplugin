@@ -4,7 +4,7 @@
 
 	<groupId>br.com.involves.jsonplugin</groupId>
 	<artifactId>jsonplugin</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>jsonplugin</name>
